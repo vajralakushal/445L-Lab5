@@ -438,6 +438,11 @@
               <FileType>5</FileType>
               <FilePath>.\Switch.h</FilePath>
             </File>
+            <File>
+              <FileName>Song.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Song.h</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>
