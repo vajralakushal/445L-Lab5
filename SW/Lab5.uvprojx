@@ -443,6 +443,31 @@
               <FileType>5</FileType>
               <FilePath>.\Song.h</FilePath>
             </File>
+            <File>
+              <FileName>DAC.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\DAC.c</FilePath>
+            </File>
+            <File>
+              <FileName>Switch.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Switch.c</FilePath>
+            </File>
+            <File>
+              <FileName>Timer0A.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\inc\Timer0A.h</FilePath>
+            </File>
+            <File>
+              <FileName>tm4c123gh6pm.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\inc\tm4c123gh6pm.h</FilePath>
+            </File>
+            <File>
+              <FileName>Song.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Song.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>

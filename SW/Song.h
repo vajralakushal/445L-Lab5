@@ -6,7 +6,7 @@
 struct Note{
 	//half note, quarter note, etc.
 	uint32_t duration;
-	//Do, Re, Mi, etc.
+	//Do, Re, Mi, etc. This will be the period reload values
 	uint32_t pitch;
 };
 
@@ -15,3 +15,6 @@ struct Song{
 	uint32_t numberNotes;
 	struct Note music[];
 };
+
+
+struct Note* loadSong();
