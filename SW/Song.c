@@ -2,6 +2,6 @@
 
 #include "Song.h"
 
-struct Note* loadSong(){
+/*struct Note* loadSong(){
 	
-}
+}*/

@@ -87,6 +87,10 @@
 /* Add whatever else you need here! */
 #include "./lib/RGB/RGB.h"
 
+#include "DAC.h"
+#include "./inc/Timer0A.h"
+#include "Switch.h"
+
 
 /** MMAP Pin definitions. */
 #define PF0   (*((volatile uint32_t *)0x40025004)) // Left Button
@@ -94,6 +98,10 @@
 #define PF2   (*((volatile uint32_t *)0x40025010)) // BLUE LED
 #define PF3   (*((volatile uint32_t *)0x40025020)) // GREEN LED
 #define PF4   (*((volatile uint32_t *)0x40025040)) // Right Button
+
+
+
+
 
 int main(void) {
     DisableInterrupts();
@@ -107,6 +115,8 @@ int main(void) {
      */
     TExaS_Init(SCOPE);
     LaunchPad_Init();
+	  SwitchInit();
+	  Timer0A_Init(4778, 2);
     
     // WARNING! BRIGHT FLASHING COLORS. DO NOT RUN IF YOU HAVE EPILEPSY.
     // RGBInit();

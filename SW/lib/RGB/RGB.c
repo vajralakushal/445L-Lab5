@@ -59,7 +59,7 @@ static void RGBStep(void) {
     state = states[state][3];
 }
 
-void RGBInit(void) {
+/*void RGBInit(void) { //TODO: maybe uncomment this
     LED_Init();
     Timer0A_Init(&RGBStep, REALTIMEPERIOD, 7); 
 }
@@ -72,5 +72,6 @@ void RGBStop(void) {
     Timer0A_Stop();
     state = 0;
 }
+*/
 #undef REALTIMEFREQ
 #undef REALTIMEPERIOD

@@ -28,6 +28,8 @@
 #include <stdint.h>
 #include "../inc/tm4c123gh6pm.h"
 #include "../inc/CortexM.h"
+#include "math.h"
+#include "DAC.h"
 
 #define NVIC_EN0_INT19          0x00080000  // Interrupt 19 enable
 #define TIMER_CFG_16_BIT        0x00000004  // 16-bit timer configuration,
@@ -44,7 +46,7 @@
                                             // Register Low
 
 
-void (*PeriodicTask0)(void);   // user function
+//void (*PeriodicTask0)(void);   // user function
 
 // ***************** Timer0A_Init ****************
 // Activate Timer0A interrupts to run user task periodically
@@ -52,9 +54,9 @@ void (*PeriodicTask0)(void);   // user function
 //          period in 12.5ns units
 //          priority 0 (highest) to 7 (lowest)
 // Outputs: none
-void Timer0A_Init(void(*task)(void), uint32_t period, uint32_t priority){
+void Timer0A_Init(/*void(*task)(void),*/ uint32_t period, uint32_t priority){
   SYSCTL_RCGCTIMER_R |= 0x01;      // 0) activate timer0
-  PeriodicTask0 = task;            // user function (this line also allows time to finish activating)
+  //PeriodicTask0 = task;            // user function (this line also allows time to finish activating)
   TIMER0_CTL_R &= ~0x00000001;     // 1) disable timer0A during setup
   TIMER0_CFG_R = 0x00000000;       // 2) configure for 32-bit timer mode
   TIMER0_TAMR_R = 0x00000002;      // 3) configure for periodic mode, default down-count settings
@@ -67,9 +69,13 @@ void Timer0A_Init(void(*task)(void), uint32_t period, uint32_t priority){
   TIMER0_CTL_R |= 0x00000001;      // 10) enable timer0A
 }
 
+uint32_t index = 0;
 void Timer0A_Handler(void){
   TIMER0_ICR_R = TIMER_ICR_TATOCINT;// acknowledge timer0A timeout
-  (*PeriodicTask0)();                // execute user task
+  //(*PeriodicTask0)();                // execute user task
+	uint32_t output = 2047 * sin(index) + 2048;
+	index++;
+	DAC_Out(output);
 }
 void Timer0A_Stop(void){
   NVIC_EN0_R = 1<<19;            // 9) disable interrupt 19 in NVIC
