@@ -6,8 +6,14 @@
 #include "./inc/tm4c123gh6pm.h"
 #include "Switch.h"
 #include "math.h"
+#include "Song.h"
+#include "stdbool.h"
 
 
+bool isPlaying = false;
+uint32_t index = 0;
+Note music[] = {}; //TODO: Populate this
+Song song;
 
 //enable Port F0 and F4 - SW1 and SW2
 void EdgeCounterPortF_Init(void){                          
@@ -49,19 +55,45 @@ void PortE_Init(void){   //initialize external button PE2
 
 
 
+
 void SwitchInit(){
 	EdgeCounterPortF_Init();
 	PortE_Init();
 }
 
 void Play(){
-	
+	while(isPlaying){
+		Note_Play(song.music[index]);
+		index = (index + 1) & (song.numberNotes - 1);
+	}
 }
 
 void Pause(){
-
+	isPlaying = false;
 }
 
 void Rewind(){
+	if(isPlaying){
+		index = 0;
+		Play();
+	} else{
+		Pause();
+	}
+}
 
+void GPIOPortF_Handler(void){
+	if(GPIO_PORTF_RIS_R& 0x10){ //PF4, SW1
+		GPIO_PORTF_ICR_R = 0x10;
+		if(isPlaying){
+			isPlaying = false;
+			Pause();
+		} else{
+			isPlaying = true;
+			Play();
+		}
+	}
+	if(GPIO_PORTF_RIS_R& 0x01){ //PF0, SW2
+		GPIO_PORTF_ICR_R = 0x01;
+		Rewind();
+	}
 }

@@ -31,9 +31,9 @@ void (*PeriodicTask1)(void);   // user function
 //          period in units (1/clockfreq)
 //          priority 0 (highest) to 7 (lowest)
 // Outputs: none
-void Timer1A_Init(void(*task)(void), uint32_t period, uint32_t priority){
+void Timer1A_Init(/*void(*task)(void),*/ uint32_t period, uint32_t priority){
   SYSCTL_RCGCTIMER_R |= 0x02;   // 0) activate TIMER1
-  PeriodicTask1 = task;         // user function
+  //PeriodicTask1 = task;         // user function
   TIMER1_CTL_R = 0x00000000;    // 1) disable TIMER1A during setup
   TIMER1_CFG_R = 0x00000000;    // 2) configure for 32-bit mode
   TIMER1_TAMR_R = 0x00000002;   // 3) configure for periodic mode, default down-count settings
@@ -48,9 +48,14 @@ void Timer1A_Init(void(*task)(void), uint32_t period, uint32_t priority){
   TIMER1_CTL_R = 0x00000001;    // 10) enable TIMER1A
 }
 
+
+uint8_t timeflag = 0;
 void Timer1A_Handler(void){
   TIMER1_ICR_R = TIMER_ICR_TATOCINT;// acknowledge TIMER1A timeout
-  (*PeriodicTask1)();               // execute user task
+  //(*PeriodicTask1)();               // execute user task
+	TIMER1_IMR_R = 0x0000000; //disable interrupt for duration timer
+	TIMER0_IMR_R = 0x0000000; //disable interrupt for pitch timer
+	timeflag++;
 }
 void Timer1A_Stop(void){
   NVIC_DIS0_R = 1<<21;        // 9) disable IRQ 21 in NVIC

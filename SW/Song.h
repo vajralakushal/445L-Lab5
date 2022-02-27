@@ -3,18 +3,22 @@
 #include "stdint.h"
 #include "stdio.h"
 
-struct Note{
+typedef struct Note{
 	//half note, quarter note, etc.
+	//this is basically the period
 	uint32_t duration;
 	//Do, Re, Mi, etc. This will be the period reload values
 	uint32_t pitch;
-};
+} Note;
 
 
-struct Song{
+typedef struct Song{
 	uint32_t numberNotes;
-	struct Note music[];
-};
+	Note music[];
+} Song;
 
 
-struct Note* loadSong();
+//loads the song into 
+Song loadSong(Note* music);
+
+void Note_Play(Note note);
