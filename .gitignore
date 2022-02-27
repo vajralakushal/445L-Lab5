@@ -37,6 +37,8 @@
 *.i*86
 *.x86_64
 *.hex
+*.scvd
+
 
 # Debug files
 *.dSYM/
@@ -60,6 +62,7 @@ dkms.conf
 *.opt
 *.uvopt
 *.uvoptx
+*.uvprojx
 *.uvgui
 *.uvgui.*
 *.uvguix.*
