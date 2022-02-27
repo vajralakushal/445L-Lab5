@@ -69,15 +69,21 @@ void Timer0A_Init(/*void(*task)(void),*/ uint32_t period, uint32_t priority){
   TIMER0_CTL_R |= 0x00000001;      // 10) enable timer0A
 }
 
-uint32_t index = 0;
+
+uint32_t Index = 0; 
+const int SineWave[64] = {32,35,38,41,44,47,49,52,54,56,58,59,61,62,62,63,63,63,62,62,61,59,58,56,54,52,49,47,44,41,38,35,32,29,26,23,20,17,15,12,10,8,6,5,3,2,2,1,1,1,2,2,3,5,6,8,10,12,15,17,20,23,26,29};
+//uint32_t index = 0;
+
 void Timer0A_Handler(void){
   TIMER0_ICR_R = TIMER_ICR_TATOCINT;// acknowledge timer0A timeout
   //(*PeriodicTask0)();                // execute user task
-	uint32_t output = 2047 * sin(index) + 2048;
+	/*uint32_t output = 2047 * sin(index) + 2048;
 	index++;
-	DAC_Out(output);
+	DAC_Out(output);*/
+	Index = (Index+1)&0x3F;      // 4,5,6,7,7,7,6,5,4,3,2,1,1,1,2,3,... 
+  DAC_Out(SineWave[Index]);    // output one value each interrupt
 }
-void Timer0A_Stop(void){
+/*void Timer0A_Stop(void){
   NVIC_EN0_R = 1<<19;            // 9) disable interrupt 19 in NVIC
   TIMER0_CTL_R = 0x00000000;     // 10) disable timer0A
-}
+}*/

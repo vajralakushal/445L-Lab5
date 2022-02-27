@@ -113,17 +113,23 @@ int main(void) {
        SCOPE_PE2,       // PE3
        SCOPE_PB5        // PB5
      */
-    TExaS_Init(SCOPE);
+    TExaS_Init(SCOPE_PD2);
     LaunchPad_Init();
 	  SwitchInit();
-	  Timer0A_Init(4778, 2);
+	  Timer0A_Init(2389, 3);
+		DAC_Init(1);
     
     // WARNING! BRIGHT FLASHING COLORS. DO NOT RUN IF YOU HAVE EPILEPSY.
     // RGBInit();
-
+	uint32_t count =0;
     EnableInterrupts();
     while(1) {
-        WaitForInterrupt();
+       // WaitForInterrupt();
+			count++;
+		if (count > 100000){
+		GPIO_PORTF_DATA_R ^= 0x02;				//heartbeat
+		count = 0;
+		}
     }
     return 1;
 }

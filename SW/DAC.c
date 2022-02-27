@@ -10,7 +10,7 @@ const unsigned short wave[32] = {
   14,13,12,11,9,8,7,5,4,3,2,
   2,1,1,1,2,2,3,4,5,7};
 
-unsigned long Index;
+//unsigned long Index;
 
 
 void DAC_Init(uint16_t data){
@@ -23,7 +23,7 @@ void DAC_Init(uint16_t data){
   GPIO_PORTD_DEN_R |= 0x0B;       // enable digital I/O on PD3,1,0
   GPIO_PORTD_PCTL_R = (GPIO_PORTD_PCTL_R
                      & 0xFFFF0F00)
-										 + 0x00002022; //TODO: CHECK THIS
+										 + 0x00002022; //TODO: CHECK THIS - correct in lec 18
   GPIO_PORTD_AMSEL_R &= ~0x0B;    // disable analog functionality on PD
   SSI1_CPSR_R = 0x08;             // 80MHz/8 = 10 MHz SSIClk (should work up to 20 MHz)
   SSI1_CR0_R &= ~(0x0000FFF0);    // SCR = 0, SPH = 0, SPO = 1 Freescale
@@ -37,7 +37,7 @@ void DAC_Init(uint16_t data){
 
 //outputs to the DAC
 void DAC_Out(uint32_t code){
-	while((SSI1_SR_R&0x00000002)==0){};// wait until room in FIFO
+	//while((SSI1_SR_R&0x00000002)==0){};// wait until room in FIFO HARD FAULT - gonna commment it out to see what happens 
   SSI1_DR_R = code; // data out
 }
 
