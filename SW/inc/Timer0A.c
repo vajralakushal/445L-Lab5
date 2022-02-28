@@ -71,7 +71,43 @@ void Timer0A_Init(/*void(*task)(void),*/ uint32_t period, uint32_t priority){
 
 
 uint32_t Index = 0; 
-const int SineWave[64] = {32,35,38,41,44,47,49,52,54,56,58,59,61,62,62,63,63,63,62,62,61,59,58,56,54,52,49,47,44,41,38,35,32,29,26,23,20,17,15,12,10,8,6,5,3,2,2,1,1,1,2,2,3,5,6,8,10,12,15,17,20,23,26,29};
+//const int SineWave[64] = {2048,2447,2831,3185,,47,49,52,54,56,58,59,61,62,62,63,63,63,62,62,61,59,58,56,54,52,49,47,44,41,38,35,32,29,26,23,20,17,15,12,10,8,6,5,3,2,2,1,1,1,2,2,3,5,6,8,10,12,15,17,20,23,26,29};
+const int SineWave[32] = {
+  // Save this to FLASH. It is not really necessary because it is a small amount
+  // of data, but an interesting exercise in case you want to use larger data blocks.
+  2048,
+  2447,
+  2831,
+  3185,
+  3495,
+  3750,
+  3939,
+  4056,
+  4095,
+  4056,
+  3939,
+  3750,
+  3495,
+  3185,
+  2831,
+  2447,
+  2048,
+  1648,
+  1264,
+  910,
+  600,
+  345,
+  156,
+  39,
+  0,
+  39,
+  156,
+  345,
+  600,
+  910,
+  1264,
+  1648
+};
 //uint32_t index = 0;
 
 void Timer0A_Handler(void){
@@ -80,8 +116,9 @@ void Timer0A_Handler(void){
 	/*uint32_t output = 2047 * sin(index) + 2048;
 	index++;
 	DAC_Out(output);*/
-	Index = (Index+1)&0x3F;      // 4,5,6,7,7,7,6,5,4,3,2,1,1,1,2,3,... 
-  DAC_Out(SineWave[Index]);    // output one value each interrupt
+	// for 64 bit: Index = (Index+1)&0x3F;      // 4,5,6,7,7,7,6,5,4,3,2,1,1,1,2,3,... 
+	Index = (Index+1)&31; 
+	DAC_Out(SineWave[Index]);    // output one value each interrupt
 }
 /*void Timer0A_Stop(void){
   NVIC_EN0_R = 1<<19;            // 9) disable interrupt 19 in NVIC
