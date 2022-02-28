@@ -90,6 +90,7 @@
 #include "DAC.h"
 #include "./inc/Timer0A.h"
 #include "Switch.h"
+#include "./inc/Timer1A.h"
 
 
 /** MMAP Pin definitions. */
@@ -117,6 +118,7 @@ int main(void) {
     LaunchPad_Init();
 	  SwitchInit();
 	  Timer0A_Init(2389, 3);
+		Timer1A_Init(0, 4);
 		DAC_Init(1);
     
     // WARNING! BRIGHT FLASHING COLORS. DO NOT RUN IF YOU HAVE EPILEPSY.

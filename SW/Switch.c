@@ -10,10 +10,43 @@
 #include "stdbool.h"
 
 
+
 bool isPlaying = false;
 uint32_t index = 0;
-Note music[] = {}; //TODO: Populate this
-Song song;
+Note OneLastTime[27] = { //TODO: Populate this
+	{G0, h,},
+	{A0, (e+q)},
+	{B0, (e+q+e)},
+	{G0, e},
+	{C0, q},
+	{B0, q},
+	{E0, (q+e)},
+	{D0, e} ,
+	{E0, (q+e)},
+	{D0, e},
+	{E0, q},
+	{G0, e},
+	{GF0, (e+h)},
+	{G0, h},
+	{A0, (e+q)},
+	{B0, (e+q+e)},
+	{G0, e},
+	{C0, q},
+	{B0, q},
+	{E0, (q+e)},
+	{D0, e},
+	{E0, (q+e)},
+	{D0, e},
+	{E0, q},
+	{G0, e},
+	{GF0, (e+h)},
+	{0,0}
+};
+
+
+Song song [1] = {
+	{27, OneLastTime}
+};
 
 //enable Port F0 and F4 - SW1 and SW2
 void EdgeCounterPortF_Init(void){                          
@@ -63,8 +96,8 @@ void SwitchInit(){
 
 void Play(){
 	while(isPlaying){
-		Note_Play(song.music[index]);
-		index = (index + 1) & (song.numberNotes - 1);
+		Note_Play(song->music[index]);
+		index = (index + 1) & (song->numberNotes - 1);
 	}
 }
 
