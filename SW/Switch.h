@@ -7,7 +7,7 @@
 void SwitchInit();
 
 //plays audio
-void Play();
+void Play(void);
 
 //rewinds audio to beginning
 void Rewind();

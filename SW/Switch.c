@@ -87,8 +87,6 @@ void PortE_Init(void){   //initialize external button PE2
 }
 
 
-
-
 void SwitchInit(){
 	EdgeCounterPortF_Init();
 	PortE_Init();
@@ -97,17 +95,17 @@ void SwitchInit(){
 }
 
 
-void Play(){
-	//TIMER1_ICR_R = TIMER_ICR_TATOCINT;
+void Play(void){
+	TIMER1_ICR_R = TIMER_ICR_TATOCINT;
 	if(isPlaying){
 		if(song.music[index].duration == 0){ //if end of song
 			Timer0A_Stop();
 			Timer1A_Stop();
 			isPlaying = 0;
 		}else{
-		Note_Play(song.music[index]);
-		TIMER1_TAILR_R = song.music[index].duration;
-		index = (index + 1) & (song.numberNotes - 1);
+			TIMER1_TAILR_R = song.music[index].duration; //pass new duration
+			Note_Play(song.music[index]); //pass info about pitch to timer0
+			index = index + 1;
 		}
 	} else{
 		Pause();
@@ -122,8 +120,9 @@ void Pause(){
 
 void Rewind(){
 	index = 0;
-	Timer1A_Init(&Play, 0, 4);
+	Timer1A_Init(&Play, 80000000, 4);
 }
+
 
 void GPIOPortF_Handler(void){
 	if(GPIO_PORTF_RIS_R& 0x10){ //PF4, SW1

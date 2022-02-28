@@ -54,4 +54,4 @@ void Note_Play(Note note);
 
 void SongInit();
 
-void PitchHandler();
+void PitchHandler(void);
