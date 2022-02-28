@@ -90,6 +90,7 @@
 #include "DAC.h"
 #include "./inc/Timer0A.h"
 #include "Switch.h"
+#include "Song.h"
 #include "./inc/Timer1A.h"
 
 
@@ -102,11 +103,6 @@
 
 
 
-void initializeEverything(){
-	DAC_Init(1);
-	SwitchInit();
-	Timer1A_Init(&Play, 20000000, 1);
-}
 
 
 int main(void) {
@@ -121,24 +117,17 @@ int main(void) {
      */
     TExaS_Init(SCOPE_PD2);
     LaunchPad_Init();
-	  //SwitchInit();
-	  //Timer0A_Init(2389, 3);
-		//Timer1A_Init(0, 4);
-		//DAC_Init(1);
+	  SwitchInit();
+	  Timer0A_Init(&PitchHandler, 2389, 3); //Pitch
+		Timer1A_Init(&Play, 0, 4); //Duration
+		DAC_Init(1);
     
     // WARNING! BRIGHT FLASHING COLORS. DO NOT RUN IF YOU HAVE EPILEPSY.
     // RGBInit();
-	uint32_t count =0;
-	initializeEverything();
     EnableInterrupts();
 	
     while(1) {
 //       // WaitForInterrupt();
-//			count++;
-//		if (count > 100000){
-//		GPIO_PORTF_DATA_R ^= 0x02;				//heartbeat
-//		count = 0;
-//		}
     }
     return 1;
 }

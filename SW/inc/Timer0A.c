@@ -75,14 +75,9 @@ void Timer0A_Init(void(*task)(void), uint32_t period, uint32_t priority){
 void Timer0A_Handler(void){
   TIMER0_ICR_R = TIMER_ICR_TATOCINT;// acknowledge timer0A timeout
   (*PeriodicTask0)();                // execute user task
-	/*uint32_t output = 2047 * sin(index) + 2048;
-	index++;
-	DAC_Out(output);*/
-	/*
-	Index = (Index+1)&31;      // 4,5,6,7,7,7,6,5,4,3,2,1,1,1,2,3,... 
-  DAC_Out(SineWave[Index]);    // output one value each interrupt
-	*/
 }
+
+
 void Timer0A_Stop(void){
   NVIC_EN0_R = 1<<19;            // 9) disable interrupt 19 in NVIC
   TIMER0_CTL_R = 0x00000000;     // 10) disable timer0A

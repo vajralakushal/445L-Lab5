@@ -22,8 +22,6 @@ void Note_Play(Note note){
 }
 
 const int SineWave[32] = {
-  // Save this to FLASH. It is not really necessary because it is a small amount
-  // of data, but an interesting exercise in case you want to use larger data blocks.
   2048,
   2447,
   2831,
@@ -58,6 +56,8 @@ const int SineWave[32] = {
   1648
 };
 uint32_t Index = 0;
+
+
 void PitchHandler(){
 	Index = (Index+1)&31;      // 4,5,6,7,7,7,6,5,4,3,2,1,1,1,2,3,... 
   DAC_Out(SineWave[Index]);    // output one value each interrupt
