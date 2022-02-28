@@ -118,8 +118,8 @@ int main(void) {
     TExaS_Init(SCOPE_PD2);
     LaunchPad_Init();
 	  SwitchInit();
-	  Timer0A_Init(&PitchHandler, 3000, 1); //Pitch
-		Timer1A_Init(&Play, 8000000, 1); //Duration
+	  Timer0A_Init(&PitchHandler, 3000, 2); //Pitch
+		Timer1A_Init(&Play, 8000000, 2); //Duration
 		DAC_Init(1);
     
     // WARNING! BRIGHT FLASHING COLORS. DO NOT RUN IF YOU HAVE EPILEPSY.
