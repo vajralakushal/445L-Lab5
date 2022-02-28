@@ -46,7 +46,7 @@
                                             // Register Low
 
 
-//void (*PeriodicTask0)(void);   // user function
+void (*PeriodicTask0)(void);   // user function
 
 // ***************** Timer0A_Init ****************
 // Activate Timer0A interrupts to run user task periodically
@@ -54,7 +54,7 @@
 //          period in 12.5ns units
 //          priority 0 (highest) to 7 (lowest)
 // Outputs: none
-void Timer0A_Init(/*void(*task)(void),*/ uint32_t period, uint32_t priority){
+void Timer0A_Init(void(*task)(void), uint32_t period, uint32_t priority){
   SYSCTL_RCGCTIMER_R |= 0x01;      // 0) activate timer0
   //PeriodicTask0 = task;            // user function (this line also allows time to finish activating)
   TIMER0_CTL_R &= ~0x00000001;     // 1) disable timer0A during setup
@@ -70,55 +70,20 @@ void Timer0A_Init(/*void(*task)(void),*/ uint32_t period, uint32_t priority){
 }
 
 
-uint32_t Index = 0; 
-const int SineWave[32] = {
-  // Save this to FLASH. It is not really necessary because it is a small amount
-  // of data, but an interesting exercise in case you want to use larger data blocks.
-  2048,
-  2447,
-  2831,
-  3185,
-  3495,
-  3750,
-  3939,
-  4056,
-  4095,
-  4056,
-  3939,
-  3750,
-  3495,
-  3185,
-  2831,
-  2447,
-  2048,
-  1648,
-  1264,
-  910,
-  600,
-  345,
-  156,
-  39,
-  0,
-  39,
-  156,
-  345,
-  600,
-  910,
-  1264,
-  1648
-};
 //uint32_t index = 0;
 
 void Timer0A_Handler(void){
   TIMER0_ICR_R = TIMER_ICR_TATOCINT;// acknowledge timer0A timeout
-  //(*PeriodicTask0)();                // execute user task
+  (*PeriodicTask0)();                // execute user task
 	/*uint32_t output = 2047 * sin(index) + 2048;
 	index++;
 	DAC_Out(output);*/
+	/*
 	Index = (Index+1)&31;      // 4,5,6,7,7,7,6,5,4,3,2,1,1,1,2,3,... 
   DAC_Out(SineWave[Index]);    // output one value each interrupt
+	*/
 }
-/*void Timer0A_Stop(void){
+void Timer0A_Stop(void){
   NVIC_EN0_R = 1<<19;            // 9) disable interrupt 19 in NVIC
   TIMER0_CTL_R = 0x00000000;     // 10) disable timer0A
-}*/
+}

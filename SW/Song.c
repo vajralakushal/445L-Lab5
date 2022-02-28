@@ -4,7 +4,7 @@
 #include "./inc/Timer1A.h"
 #include "./inc/Timer0A.h"
 #include "./inc/tm4c123gh6pm.h"
-
+#include "DAC.h"
 
 
 
@@ -16,12 +16,53 @@
 uint32_t pitch;
 uint32_t length;
 void Note_Play(Note note){
-	 pitch = note.pitch;
+	pitch = note.pitch;
 	length = note.duration;
-	TIMER0_TAILR_R = pitch;  
-	TIMER1_TAILR_R = note.duration;
-	TIMER0_IMR_R = 0x00000001; 
-	TIMER1_IMR_R = 0x00000001; 
+	Timer0A_Init(&PitchHandler, pitch, 1);
 }
+
+const int SineWave[32] = {
+  // Save this to FLASH. It is not really necessary because it is a small amount
+  // of data, but an interesting exercise in case you want to use larger data blocks.
+  2048,
+  2447,
+  2831,
+  3185,
+  3495,
+  3750,
+  3939,
+  4056,
+  4095,
+  4056,
+  3939,
+  3750,
+  3495,
+  3185,
+  2831,
+  2447,
+  2048,
+  1648,
+  1264,
+  910,
+  600,
+  345,
+  156,
+  39,
+  0,
+  39,
+  156,
+  345,
+  600,
+  910,
+  1264,
+  1648
+};
+uint32_t Index = 0;
+void PitchHandler(){
+	Index = (Index+1)&31;      // 4,5,6,7,7,7,6,5,4,3,2,1,1,1,2,3,... 
+  DAC_Out(SineWave[Index]);    // output one value each interrupt
+}
+
+
 
 

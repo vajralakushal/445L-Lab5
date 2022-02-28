@@ -8,13 +8,15 @@
 #include "math.h"
 #include "Song.h"
 #include "stdbool.h"
+#include "./inc/Timer0A.h"
+#include "./inc/Timer1A.h"
 
 
 
-bool isPlaying = false;
-uint32_t index = 0;
+bool isPlaying;
+uint32_t index;
 Note OneLastTime[27] = { //TODO: Populate this
-	{G0, h,},
+	{G0, h},
 	{A0, (e+q)},
 	{B0, (e+q+e)},
 	{G0, e},
@@ -44,9 +46,7 @@ Note OneLastTime[27] = { //TODO: Populate this
 };
 
 
-Song song [1] = {
-	{27, OneLastTime}
-};
+Song song = {27, OneLastTime};
 
 //enable Port F0 and F4 - SW1 and SW2
 void EdgeCounterPortF_Init(void){                          
@@ -92,38 +92,36 @@ void PortE_Init(void){   //initialize external button PE2
 void SwitchInit(){
 	EdgeCounterPortF_Init();
 	PortE_Init();
+	isPlaying = true;
+	index = 0;
 }
+
 
 void Play(){
-	while(isPlaying){
-		Note_Play(song->music[index]);
-		index = (index + 1) & (song->numberNotes - 1);
-	}
-}
-
-void Pause(){
-	isPlaying = false;
-}
-
-void Rewind(){
+	TIMER1_ICR_R = TIMER_ICR_TATOCINT;
 	if(isPlaying){
-		index = 0;
-		Play();
+		Note_Play(song.music[index]);
+		TIMER1_TAILR_R = song.music[index].duration;
+		index = (index + 1) & (song.numberNotes - 1);
 	} else{
 		Pause();
 	}
 }
 
+void Pause(){
+	isPlaying = false;
+	DAC_Out(0);
+	Timer0A_Stop();
+}
+
+void Rewind(){
+	index = 0;
+}
+
 void GPIOPortF_Handler(void){
 	if(GPIO_PORTF_RIS_R& 0x10){ //PF4, SW1
 		GPIO_PORTF_ICR_R = 0x10;
-		if(isPlaying){
-			isPlaying = false;
-			Pause();
-		} else{
-			isPlaying = true;
-			Play();
-		}
+		isPlaying = !isPlaying;
 	}
 	if(GPIO_PORTF_RIS_R& 0x01){ //PF0, SW2
 		GPIO_PORTF_ICR_R = 0x01;

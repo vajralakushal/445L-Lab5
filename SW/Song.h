@@ -5,7 +5,7 @@
 
 // define note lengths and qualities 
 //#define bus 150000000
-#define bus 80000000
+#define bus 20000000
 #define q (bus/4)
 #define h (q*2)
 #define w (q*4)
@@ -51,3 +51,7 @@ typedef struct Song{
 Song loadSong(Note* music);
 
 void Note_Play(Note note);
+
+void SongInit();
+
+void PitchHandler();
