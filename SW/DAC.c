@@ -36,7 +36,7 @@ void DAC_Init(uint16_t data){
 
 
 //outputs to the DAC
-void DAC_Out(uint32_t code){
-	//while((SSI1_SR_R&0x00000002)==0){};// wait until room in FIFO HARD FAULT - gonna commment it out to see what happens 
+void DAC_Out(uint16_t code){
+	while((SSI1_SR_R&0x00000002)==0){};// wait until room in FIFO HARD FAULT - gonna commment it out to see what happens 
   SSI1_DR_R = code; // data out
 }

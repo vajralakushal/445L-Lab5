@@ -90,6 +90,7 @@
 #include "DAC.h"
 #include "./inc/Timer0A.h"
 #include "Switch.h"
+#include "./inc/PLL.h"
 
 
 /** MMAP Pin definitions. */
@@ -114,6 +115,7 @@ int main(void) {
        SCOPE_PB5        // PB5
      */
     TExaS_Init(SCOPE_PD2);
+		//PLL_Init(Bus80MHz);
     LaunchPad_Init();
 	  SwitchInit();
 	  Timer0A_Init(2389, 3);

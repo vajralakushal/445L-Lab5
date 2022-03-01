@@ -111,14 +111,14 @@ const int SineWave[32] = {
 //uint32_t index = 0;
 
 void Timer0A_Handler(void){
-  TIMER0_ICR_R = TIMER_ICR_TATOCINT;// acknowledge timer0A timeout
   //(*PeriodicTask0)();                // execute user task
 	/*uint32_t output = 2047 * sin(index) + 2048;
 	index++;
 	DAC_Out(output);*/
 	// for 64 bit: Index = (Index+1)&0x3F;      // 4,5,6,7,7,7,6,5,4,3,2,1,1,1,2,3,... 
-	Index = (Index+1)&31; 
 	DAC_Out(SineWave[Index]);    // output one value each interrupt
+	Index = (Index+1)%31; 
+	TIMER0_ICR_R = TIMER_ICR_TATOCINT;// acknowledge timer0A timeout
 }
 /*void Timer0A_Stop(void){
   NVIC_EN0_R = 1<<19;            // 9) disable interrupt 19 in NVIC
