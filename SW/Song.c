@@ -17,7 +17,7 @@ uint32_t pitch;
 uint32_t length;
 
 void Note_Play(Note note){
-	pitch = note.pitch;
+	pitch = 2500000/note.pitch;
 	length = note.duration;
 	Index = 0; //start  from beginning of sine wave
 	Timer0A_Init(&PitchHandler, pitch, 1);
@@ -62,7 +62,7 @@ const int SineWave[32] = {
 
 void PitchHandler(void){
 	DAC_Out(SineWave[Index]);    // output one value each interrupt
-	Index = (Index+1)&31;      // 4,5,6,7,7,7,6,5,4,3,2,1,1,1,2,3,... 
+	Index = (Index+1)%32;      // 4,5,6,7,7,7,6,5,4,3,2,1,1,1,2,3,... 
 }
 
 
