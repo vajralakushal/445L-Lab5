@@ -105,7 +105,7 @@
 
 
 
-int main(void) {
+int main8(void) {
     DisableInterrupts();
 
     /* TExaS Debug modes:
@@ -128,6 +128,37 @@ int main(void) {
 	
     while(1) {
 //       // WaitForInterrupt();
+    }
+    return 1;
+}
+
+int main(void) {  //testing code for the deliverables
+    DisableInterrupts();
+
+    /* TExaS Debug modes:
+       SCOPE,           // PD3
+       LOGICANALYZER,   // ???
+       SCOPE_PD2,       // PD2
+       SCOPE_PE2,       // PE3
+       SCOPE_PB5        // PB5
+     */
+    TExaS_Init(SCOPE_PD2);
+    LaunchPad_Init();
+	 // SwitchInit();
+	 // Timer0A_Init(&PitchHandler, 3000, 2); //Pitch
+	//Timer1A_Init(&Play, 8000000, 2); //Duration
+		DAC_Init(2380);
+		Timer0A_Init(&PitchHandler, 2380, 2); //Pitch
+    
+    // WARNING! BRIGHT FLASHING COLORS. D
+	//O NOT RUN IF YOU HAVE EPILEPSY.s
+    // RGBInit();
+    EnableInterrupts();
+	
+    while(1) {
+//       // WaitForInterrupt();
+	
+			
     }
     return 1;
 }
