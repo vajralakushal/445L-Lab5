@@ -15,7 +15,7 @@
 
 bool isPlaying;
 uint32_t index;
-Note OneLastTime[27] = { //TODO: Populate this
+Note OneLastTime[26] = { //TODO: Populate this
 	{G0, h},
 	{A0, (e+q)},
 	{B0, (e+q+e)},
@@ -42,11 +42,11 @@ Note OneLastTime[27] = { //TODO: Populate this
 	{E0, q},
 	{G0, e},
 	{GF0, (e+h)},
-	{0,0}
+	//{0,0}
 };
 
 
-Song song = {27, OneLastTime};
+Song song = {26, OneLastTime};
 
 //enable Port F0 and F4 - SW1 and SW2
 void EdgeCounterPortF_Init(void){                          
@@ -101,11 +101,12 @@ void Play(void){
 		if(song.music[index].duration == 0){ //if end of song
 			Timer0A_Stop();
 			Timer1A_Stop();
+			DAC_Out(0);
 			isPlaying = 0;
 		}else{
-			TIMER1_TAILR_R = song.music[index].duration; //pass new duration
 			Note_Play(song.music[index]); //pass info about pitch to timer0
-			index = (index + 1) & (song.numberNotes - 1);
+			TIMER1_TAILR_R = song.music[index].duration; //pass new duration	
+			index = (index + 1) % song.numberNotes;
 		}
 	} else{
 		Pause();
