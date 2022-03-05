@@ -19,6 +19,8 @@
 
 #define DUMPBUFSIZE 300
 
+void Timer1_Init(void);
+
 /**
  * @brief DumpInit initializes the debugging dump.
  * 

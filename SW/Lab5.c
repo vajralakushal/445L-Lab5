@@ -104,7 +104,7 @@
 
 
 
-
+extern uint32_t realTimeCount;
 
 int main8(void) {
     DisableInterrupts();
@@ -145,9 +145,6 @@ int main(void) {  //testing code for the deliverables
      */
     //TExaS_Init(SCOPE_PD2);
     LaunchPad_Init();
-	 // SwitchInit();
-	 // Timer0A_Init(&PitchHandler, 3000, 2); //Pitch
-	//Timer1A_Init(&Play, 8000000, 2); //Duration
 		DumpInit();
 	  JitterInit();
 		DAC_Init(2380);
@@ -157,10 +154,14 @@ int main(void) {  //testing code for the deliverables
 	//O NOT RUN IF YOU HAVE EPILEPSY.s
     // RGBInit();
     EnableInterrupts();
-	
+		realTimeCount = 0;
+		uint32_t jitter;
     while(1) {
 //       // WaitForInterrupt();
-	
+			
+			if(realTimeCount == 300){
+				jitter = JitterGet();
+			}
 			
     }
     return 1;

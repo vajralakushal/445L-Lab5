@@ -44,9 +44,8 @@ void Timer1_Init(void) {
 
 
 void DumpInit(void){
-    /* TODO (EE445L Lab 2): complete this. */
 	DumpNum = 0; //initialize number of elem in arrary to 0
-	//Timer1_Init();//call Timer1_Init here instead of JitterInit - RV
+	Timer1_Init();//call Timer1_Init here instead of JitterInit - RV
 }
 
 void DumpCapture(uint32_t data){
@@ -83,7 +82,7 @@ void JitterInit(void){
 void JitterMeasure(void){
     /* TODO (EE445L Lab 2): complete this. */
 	if (firstCall == 1){
-		DeltaI = TIMER0_TAR_R;  //if first call, jitter  = timer1
+		DeltaI = TIMER1_TAR_R;  //if first call, jitter  = timer1
 		prevTime = DeltaI; 
 		MinDeltaI = DeltaI; //set min to first call jitter 
 		firstCall = 0;

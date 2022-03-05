@@ -31,6 +31,7 @@
 #include "math.h"
 #include "DAC.h"
 #include "Song.h"
+#include "Dump.h"
 
 #define NVIC_EN0_INT19          0x00080000  // Interrupt 19 enable
 #define TIMER_CFG_16_BIT        0x00000004  // 16-bit timer configuration,
@@ -45,7 +46,7 @@
                                             // Interrupt
 #define TIMER_TAILR_TAILRL_M    0x0000FFFF  // GPTM TimerA Interval Load
                                             // Register Low
-
+uint32_t realTimeCount; 
 
 void (*PeriodicTask0)(void);   // user function
 
@@ -68,6 +69,7 @@ void Timer0A_Init(void(*task)(void), uint32_t period, uint32_t priority){
   NVIC_PRI4_R = (NVIC_PRI4_R&0x00FFFFFF)|(priority<<29); 
   NVIC_EN0_R = NVIC_EN0_INT19;     // 9) enable interrupt 19 in NVIC
   TIMER0_CTL_R |= 0x00000001;      // 10) enable timer0A
+	realTimeCount = 0;
 }
 
 
@@ -76,6 +78,8 @@ void Timer0A_Init(void(*task)(void), uint32_t period, uint32_t priority){
 void Timer0A_Handler(void){
   TIMER0_ICR_R = TIMER_ICR_TATOCINT;// acknowledge timer0A timeout
   (*PeriodicTask0)();                // execute user task
+	realTimeCount++;
+	
 }
 
 
