@@ -46,7 +46,56 @@ Note OneLastTime[26] = { //TODO: Populate this
 };
 
 
-Song song = {26, OneLastTime};
+Note DangerousWoman[44] = { 						//declare prototype for variable 
+	{D0, q},
+	{E0, q},
+	{G0, q},
+	{E0, (h+q)},
+	{A0, h},
+	{G0, q},
+	{A0, q},
+	{A0, q},
+	{G0, q},
+	{BF0, q},
+	{A0, q},
+	{G0, q},
+	{A0, q},
+	{G0, (e+h)},
+	{D0, q},
+	{E0, q},
+	{E0, q},
+	{D0, q},
+	{E0, q},
+	{E0, q},
+	{D0, q},
+	{E0, q},
+	{G0, q},
+	{E0, (h+q)},
+	{A0, h},
+	{G0, q},
+	{A0, q},
+	{A0, q},
+	{G0, q},
+	{BF0, q},
+	{A0, q},
+	{G0, q},
+	{A0, q},
+	{G0, (e+h)},
+	{D0, q},
+	{E0, q},
+	{E0, q},
+	{D0, q},
+	{E0, q},
+	{E0, q},
+	{D0, q},
+	{E0, q},
+	{G0, q},
+	{E0, w},
+	//{0,0}
+};
+
+Song oneLastTime = {26, OneLastTime};
+Song dangerousWoman = {44, DangerousWoman};
 
 //enable Port F0 and F4 - SW1 and SW2
 void EdgeCounterPortF_Init(void){                          
@@ -98,15 +147,15 @@ void SwitchInit(){
 void Play(void){
 	TIMER1_ICR_R = TIMER_ICR_TATOCINT;
 	if(isPlaying){
-		if(song.music[index].duration == 0){ //if end of song
+		if(dangerousWoman.music[index].duration == 0){ //if end of dangerousWoman
 			Timer0A_Stop();
 			Timer1A_Stop();
 			DAC_Out(0);
 			isPlaying = 0;
 		}else{
-			Note_Play(song.music[index]); //pass info about pitch to timer0
-			TIMER1_TAILR_R = song.music[index].duration; //pass new duration	
-			index = (index + 1) % song.numberNotes;
+			Note_Play(dangerousWoman.music[index]); //pass info about pitch to timer0
+			TIMER1_TAILR_R = dangerousWoman.music[index].duration; //pass new duration	
+			index = (index + 1) % dangerousWoman.numberNotes;
 		}
 	} else{
 		Pause();

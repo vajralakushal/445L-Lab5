@@ -5,6 +5,7 @@
 #include "./inc/Timer0A.h"
 #include "./inc/tm4c123gh6pm.h"
 #include "DAC.h"
+#include "./inc/Dump.h"
 
 
 
@@ -63,6 +64,7 @@ const int SineWave[32] = {
 void PitchHandler(void){
 	DAC_Out(SineWave[Index]);    // output one value each interrupt
 	Index = (Index+1)%32;      // 4,5,6,7,7,7,6,5,4,3,2,1,1,1,2,3,... 
+	uint32_t jitter = JitterGet();
 }
 
 

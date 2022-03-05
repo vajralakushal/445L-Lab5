@@ -478,6 +478,16 @@
               <FileType>5</FileType>
               <FilePath>.\inc\Timer1A.h</FilePath>
             </File>
+            <File>
+              <FileName>Dump.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\inc\Dump.c</FilePath>
+            </File>
+            <File>
+              <FileName>Dump.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\inc\Dump.h</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>

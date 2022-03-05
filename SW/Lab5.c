@@ -92,6 +92,7 @@
 #include "Switch.h"
 #include "Song.h"
 #include "./inc/Timer1A.h"
+#include "./inc/Dump.h"
 
 
 /** MMAP Pin definitions. */
@@ -142,11 +143,13 @@ int main(void) {  //testing code for the deliverables
        SCOPE_PE2,       // PE3
        SCOPE_PB5        // PB5
      */
-    TExaS_Init(SCOPE_PD2);
+    //TExaS_Init(SCOPE_PD2);
     LaunchPad_Init();
 	 // SwitchInit();
 	 // Timer0A_Init(&PitchHandler, 3000, 2); //Pitch
 	//Timer1A_Init(&Play, 8000000, 2); //Duration
+		DumpInit();
+	  JitterInit();
 		DAC_Init(2380);
 		Timer0A_Init(&PitchHandler, 2380, 2); //Pitch
     

@@ -1,6 +1,6 @@
 /**
  * @file Dump.c
- * @author your name (you@domain.com), Jonathan Valvano, Matthew Yu
+ * @author Reva Vaidya (you@domain.com), Jonathan Valvano, Matthew Yu
  *    <TA NAME and LAB SECTION # HERE>
  * @brief 
  *    A set of debugging functions that capture data for later inspection.
@@ -8,7 +8,7 @@
  *       - DebugCapture will record data and time.
  *       - JitterMeasure will measure real time jitter.
  * @version 0.1
- * @date 2022-01-31 <REPLACE WITH DATE OF LAST REVISION>
+ * @date 2022- 02 - 02
  *
  * @copyright Copyright (c) 2022
  */
@@ -21,7 +21,14 @@
 // Global variables
 uint32_t DumpTimeBuffer[DUMPBUFSIZE];
 uint32_t DumpDataBuf[DUMPBUFSIZE];
+uint32_t JitterBuf[DUMPBUFSIZE];
+uint32_t DeltaI;
+uint32_t prevTime; 
+uint32_t CurrTime; //testing for deliverable 5
 uint32_t DumpNum;
+uint32_t MaxDeltaI;
+uint32_t MinDeltaI;
+uint32_t firstCall;
 
 void Timer1_Init(void) {
     volatile uint32_t delay;
@@ -35,39 +42,85 @@ void Timer1_Init(void) {
     TIMER1_CTL_R           = 0x00000001;          // 10) enable TIMER1A
 }
 
+
 void DumpInit(void){
     /* TODO (EE445L Lab 2): complete this. */
+	DumpNum = 0; //initialize number of elem in arrary to 0
+	//Timer1_Init();//call Timer1_Init here instead of JitterInit - RV
 }
 
 void DumpCapture(uint32_t data){
     /* TODO (EE445L Lab 2): complete this. */
     // Use TIMER1_TAR_R as current time
+	if(DumpNum < DUMPBUFSIZE){  //if room, increment to next loc - RV
+		DumpTimeBuffer[DumpNum] = TIMER0_TAR_R;  //dump time
+		DumpDataBuf[DumpNum] = data; //dump data
+		DumpNum++; 
+	}
 }
 
 uint32_t DumpCount(void){ 
     /* TODO (EE445L Lab 2): complete this. */
-    return 0;
+    return DumpNum; //return how many elem in array
 }
 
 uint32_t* DumpData(void){ 
-    return DumpDataBuf;
+    return DumpDataBuf;  //look at dump data
 }
 
 uint32_t* DumpTime(void){ 
-    return DumpTimeBuffer;
+    return DumpTimeBuffer; //look at dump times
 }
 
 void JitterInit(void){
     /* TODO (EE445L Lab 2): complete this. */
+	//initialzie Globals 
+	MinDeltaI = 0;
+	MaxDeltaI = 0;
+	firstCall = 1;
 }
 
 void JitterMeasure(void){
     /* TODO (EE445L Lab 2): complete this. */
+	if (firstCall == 1){
+		DeltaI = TIMER0_TAR_R;  //if first call, jitter  = timer1
+		prevTime = DeltaI; 
+		MinDeltaI = DeltaI; //set min to first call jitter 
+		firstCall = 0;
+	}else{
+		CurrTime = TIMER1_TAR_R;
+		DeltaI = prevTime - CurrTime; //jitter = prev - current time b/c count down 
+		prevTime = CurrTime;  //set prev time to current time - RV
+		//check to see if this should be moved to out - RV
+		if(MaxDeltaI < DeltaI){  //see if new jitter min/max 
+			MaxDeltaI = DeltaI;
+		}	
+		if(MinDeltaI > DeltaI){
+			MinDeltaI = DeltaI;
+		}
+	}
+	/*if(DumpNum == 0){
+		JitterBuf[DumpNum] = DumpTimeBuffer[DumpNum];
+		
+	} else{
+		JitterBuf[DumpNum] = DumpTimeBuffer[DumpNum] - DumpTimeBuffer[DumpNum - 1];
+	}*/
+	
 }
 
 uint32_t JitterGet(void){
     /* TODO (EE445L Lab 2): complete this. */
-    return 42;
+	/*	for(uint32_t i = 0; i < DumpNum; i++){
+			uint32_t DeltaI = JitterBuf[i];
+			if(MaxDeltaI < DeltaI){
+				MaxDeltaI = DeltaI;
+			}
+		
+			if(MinDeltaI > DeltaI){
+				MinDeltaI = DeltaI;
+			}
+		}*/
+    return MaxDeltaI - MinDeltaI;
 }
 
 
